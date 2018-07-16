@@ -1,6 +1,6 @@
 <?php
 /**
- * The Query Builder
+ * The Database
  */
 defined( 'ABSPATH' ) || exit;
 
