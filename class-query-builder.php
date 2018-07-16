@@ -330,7 +330,7 @@ class Query_Builder {
 	 * @return array
 	 */
 	protected function argument_to_array( $argument ) {
-		if ( Helper::str_contains( ',', $argument ) ) {
+		if ( false !== strpos( $argument, ',' ) ) {
 			return array_map( 'trim', explode( ',', $argument ) );
 		}
 
