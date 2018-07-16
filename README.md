@@ -9,12 +9,12 @@ Database::table( $wpdb->prefix . 'your_custom_table_name' )
   ->where( 'id', 2 )
   ->orderBy( 'id', 'desc' )
   ->limit( 20 )
-  ->execute();
+	->execute();
 ```
   
 ```
 function get_logs( $args ) {
-    $table = Database::table( $wpdb->prefix . 'your_custom_table_name' )
+  $table = Database::table( $wpdb->prefix . 'your_custom_table_name' )
 	$args  = wp_parse_args( $args, array(
 		'orderby' => 'id',
 		'order'   => 'DESC',
