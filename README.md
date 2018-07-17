@@ -23,7 +23,7 @@ $table->select()
   ->where( 'id', 2 )
   ->orderBy( 'id', 'desc' )
   ->limit( 20 )
-	->execute();
+  ->get();
 ```
 
 ## Data Sanitisation
