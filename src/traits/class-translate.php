@@ -67,6 +67,32 @@ class Translate {
 	}
 
 	/**
+	 * Translate the current query to an SQL update statement
+	 *
+	 * @return string
+	 */
+	private function translateUpdate() { // @codingStandardsIgnoreLine
+		$build = array( "update {$this->table} SET" );
+
+		// add the values.
+		foreach ( $this->values as $key => $value ) {
+			$build[] = $key . ' = ' . $this->esc_value( $value );
+		}
+
+		// build the where statements
+		if ( ! empty( $this->wheres ) ) {
+			$build[] = $this->translateWhere( $this->wheres );
+		}
+
+		// build offset and limit
+		if ( ! empty( $this->limit ) ) {
+			$build[] = $this->limit;
+		}
+
+		return join( ' ', $build );
+	}
+
+	/**
 	 * Translate the current query to an SQL delete statement
 	 *
 	 * @return string

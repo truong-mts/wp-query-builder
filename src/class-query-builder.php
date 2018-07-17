@@ -73,6 +73,16 @@ class Query_Builder {
 	 */
 	protected $limit = null;
 
+	/**
+	 * values container for insert/update
+	 *
+	 * @var array
+	 */
+	protected $values = array();
+
+	/**
+	 * Constructor
+	 */
 	public function __construct( $table ) {
 		$this->table = $table;
 	}
@@ -131,19 +141,29 @@ class Query_Builder {
 	}
 
 	/**
+	 * Update a row into a table
+	 *
+	 * @see wpdb::update()
+	 */
+	public function update() {
+
+		$query = $this->translateUpdate();
+		$this->reset();
+
+		return $this->query( $query );
+	}
+
+	/**
 	 * Delete data from table
 	 *
 	 * @return mixed
 	 */
 	public function delete() {
-		global $wpdb;
 
 		$query = $this->translateDelete();
 		$this->reset();
 
-		return $query;
-
-		return $wpdb->get_results( $query, $output ); // WPCS: unprepared SQL ok.
+		return $this->query( $query );
 	}
 
 	/**
@@ -186,9 +206,43 @@ class Query_Builder {
 	 */
 	public function limit( $limit, $offset = 0 ) {
 		global $wpdb;
+		$limit  = absint( $limit );
+		$offset = absint( $offset );
 
-		if ( is_numeric( $offset ) && is_numeric( $limit ) && $offset >= 0 && $limit > 0 ) {
-			$this->limit = $wpdb->prepare( 'LIMIT %d OFFSET %d', $limit, $offset );
+		$this->limit = $wpdb->prepare( 'LIMIT %d OFFSET %d', $limit, $offset );
+
+		return $this;
+	}
+
+	/**
+	 * Create an query limit based on a page and a page size
+	 *
+	 * @param int        $page
+	 * @param int         $size
+	 *
+	 * @return self The current query builder.
+	 */
+	public function page( $page, $size = 25 ) {
+		$size   = absint( $size );
+		$offset = $size * absint( $page );
+
+		$this->limit( $size, $offset );
+
+		return $this;
+	}
+
+	/**
+	 * Set values for insert/update
+	 *
+	 * @param string|array $name
+	 * @param string|array $value
+	 */
+	public function set( $name, $value ) {
+
+		if ( is_array( $name ) ) {
+			$this->values = $this->values + $value;
+		} else {
+			$this->values[ $name ] = $value;
 		}
 
 		return $this;
@@ -201,6 +255,7 @@ class Query_Builder {
 		$this->select     = array();
 		$this->wheres     = array();
 		$this->orders     = array();
+		$this->values     = array();
 		$this->limit      = null;
 	}
 }
