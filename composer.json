@@ -1,0 +1,22 @@
+{
+	"name": "thewpleague/wp-query-builder",
+	"description": "A WordPress Query builder",
+	"type": "library",
+	"require": {
+		"php": ">=5.2"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Shakeeb Ahmed",
+			"email": "me@shakeebahmed.com"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"TheLeague\\Database\\": "src/"
+		},
+		"classmap" : [ "src/" ],
+		"optimize-autoloader": true
+	}
+}

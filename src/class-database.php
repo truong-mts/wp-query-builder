@@ -2,6 +2,8 @@
 /**
  * The Database
  */
+namespace TheLeague\Database;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
