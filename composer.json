@@ -16,7 +16,9 @@
 		"psr-4" : {
 			"TheLeague\\Database\\": "src/"
 		},
-		"classmap" : [ "src/" ],
+		"classmap" : [ "src/" ]
+	},
+	"config": {
 		"optimize-autoloader": true
 	}
 }
