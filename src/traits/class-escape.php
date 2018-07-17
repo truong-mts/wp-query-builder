@@ -30,8 +30,12 @@ class Escape {
 	public function esc_value( $value ) {
 		global $wpdb;
 
-		if ( is_numeric( $value ) ) {
+		if ( is_int( $value ) ) {
 			return $wpdb->prepare( '%d', $value );
+		}
+
+		if ( is_float( $value ) ) {
+			return $wpdb->prepare( '%f', $value );
 		}
 
 		if ( is_string( $value ) ) {

@@ -101,6 +101,7 @@ class Query_Builder {
 	public function one( $output = OBJECT ) {
 		global $wpdb;
 
+		$this->limit( 1 );
 		$query = $this->translateSelect();
 		$this->reset();
 
