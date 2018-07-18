@@ -57,11 +57,16 @@ trait Translate {
 	 * @return string
 	 */
 	private function translateUpdate() { // @codingStandardsIgnoreLine
-		$build = array( "update {$this->table} SET" );
+		$build = array( "update {$this->table} set" );
 
-		// add the values.
+		// Add the values.
+		$values = array();
 		foreach ( $this->values as $key => $value ) {
-			$build[] = $key . ' = ' . $this->esc_value( $value );
+			$values[] = $key . ' = ' . $this->esc_value( $value );
+		}
+
+		if ( ! empty( $values ) ) {
+			$build[] = join( ', ', $values );
 		}
 
 		// Build the where statements.
@@ -106,31 +111,7 @@ trait Translate {
 	 * @return string
 	 */
 	protected function translateWhere( $wheres ) { // @codingStandardsIgnoreLine
-		$build = array();
-		foreach ( $wheres as $where ) {
-
-			// To make nested wheres possible you can pass an closure.
-			// Wich will create a new query where you can add your nested wheres.
-			if ( isset( $where[0] ) && 'subquery' === $where[0] ) {
-				unset( $where[1][0][0] );
-				if ( true == $where[2] ) {
-					$build[] = 'where';
-				}
-				$build[] = '( ' . $this->translateWhere( $where[1] ) . ' )';
-				continue;
-			}
-
-			// When we have an array as where values we have to parameterize them.
-			if ( is_array( $where[3] ) ) {
-				$where[3] = '(' . join( ', ', $this->esc_array( $where[3] ) ) . ')';
-			} elseif ( is_scalar( $where[3] ) ) {
-				$where[3] = $this->esc_value( $where[3] );
-			}
-
-			$build[] = join( ' ', $where );
-		}
-
-		return join( ' ', $build );
+		return join( ' ', $wheres );
 	}
 
 	/**
@@ -139,7 +120,7 @@ trait Translate {
 	 * @return string
 	 */
 	protected function translateOrderBy() { // @codingStandardsIgnoreLine
-		$build = array( 'order by' );
+		$build = array();
 
 		foreach ( $this->orders as $column => $direction ) {
 
@@ -150,8 +131,12 @@ trait Translate {
 				list( $column, $direction ) = $direction;
 			}
 
-			$build[] = $column . ' ' . $direction;
+			if ( ! is_null( $direction ) ) {
+				$column .= ' ' . $direction;
+			}
+
+			$build[] = $column;
 		}
-		return join( ' ', $build );
+		return 'order by ' . join( ', ', $build );
 	}
 }

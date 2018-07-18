@@ -33,18 +33,23 @@ trait Where {
 			throw new Exception( 'Invalid where type "' . $type . '"' );
 		}
 
-		if ( ! is_array( $column ) && empty( $this->wheres ) ) {
+		$sub_type = is_null( $param1 ) ? $type : $param1;
+		if ( empty( $this->wheres ) ) {
 			$type = 'where';
 		}
 
 		// when column is an array we assume to make a bulk and where.
 		if ( is_array( $column ) ) {
 			$subquery = array();
-			foreach ( $column as $key => $val ) {
-				$subquery[] = $this->generateWhere( $key, $val, null, $type );
+			foreach ( $column as $value ) {
+				if ( ! isset( $value[2] ) ) {
+					$value[2] = $value[1];
+					$value[1] = '=';
+				}
+				$subquery[] = $this->generateWhere( $value[0], $value[1], $value[2], empty( $subquery ) ? '' : $sub_type );
 			}
 
-			$this->wheres[] = array( 'subquery', $subquery, empty( $this->wheres ) );
+			$this->wheres[] = $type . ' ( ' . trim( join( ' ', $subquery ) ) . ' )';
 
 			return $this;
 		}
@@ -110,9 +115,11 @@ trait Where {
 		// When param2 is an array we probably
 		// have an "in" or "between" statement which has no need for duplicates.
 		if ( is_array( $param2 ) ) {
-			$param2 = array_unique( $param2 );
+			$param2 = '(' . join( ', ', $this->esc_array( array_unique( $param2 ) ) ) . ')';
+		} elseif ( is_scalar( $param2 ) ) {
+			$param2 = $this->esc_value( $param2 );
 		}
 
-		return array( $type, $column, $param1, $param2 );
+		return join( ' ', array( $type, $column, $param1, $param2 ) );
 	}
 }

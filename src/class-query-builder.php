@@ -208,7 +208,7 @@ class Query_Builder {
 		$limit  = absint( $limit );
 		$offset = absint( $offset );
 
-		$this->limit = $wpdb->prepare( 'LIMIT %d OFFSET %d', $limit, $offset );
+		$this->limit = $wpdb->prepare( 'limit %d, %d', $offset, $limit );
 
 		return $this;
 	}
