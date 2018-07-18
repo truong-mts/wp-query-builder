@@ -18,15 +18,7 @@
 		},
 		"classmap" : [ "src/" ]
 	},
-	"autoload-dev" : {
-		"psr-4" : {
-			"TheLeague\\Database\\Test\\": "tests/"
-		}
-	},
 	"config": {
 		"optimize-autoloader": true
-	},
-	"require-dev": {
-		"phpunit/phpunit": "^7.2"
 	}
 }

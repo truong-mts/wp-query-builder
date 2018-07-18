@@ -1,23 +1,16 @@
 <?php
 /**
- * [namespace description]
- * @var [type]
- */
-namespace TheLeague\Database\Test;
-
-use PHPUnit\Framework\TestCase;
-
-/**
  * BuilderTest class.
  */
-class BuilderTest extends TestCase {
+class BuilderTest extends WP_UnitTestCase {
 
-	public function testInstance() {
+	public function test_instance() {
 		$table = $this->createBuilder();
 		$this->assertInstanceOf( '\TheLeague\Database\Query_Builder', $table );
 	}
 
-	public function testSelectSimple() {
+	public function test_select_simple() {
+		$this->assertTrue( false );
 
 		$this->assertQueryTranslation( 'select * from phpunit', 'Select', function( $table ) {
 			$table->select();
