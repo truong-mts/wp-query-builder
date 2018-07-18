@@ -4,12 +4,10 @@
  */
 namespace TheLeague\Database\Traits;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Escape class.
  */
-class Escape {
+trait Escape {
 
 	/**
 	 * Escape array values for sql

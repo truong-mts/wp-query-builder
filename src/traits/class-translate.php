@@ -4,12 +4,10 @@
  */
 namespace TheLeague\Database\Traits;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Translate class.
  */
-class Translate {
+trait Translate {
 
 	/**
 	 * Translate the current query to an SQL select statement
@@ -27,23 +25,7 @@ class Translate {
 		}
 
 		// build the selected fields
-		if ( ! empty( $this->select ) ) {
-			$columns = array();
-
-			foreach ( $this->select as $key => $field ) {
-				if ( is_array( $field ) ) {
-					list( $column, $alias ) = $field;
-
-					$columns[] = is_null( $alias ) ? $column : "{$column} as {$alias}";
-				} else {
-					$columns[] = $field;
-				}
-			}
-
-			$build[] = join( ', ', $columns );
-		} else {
-			$build[] = '*';
-		}
+		$build[] = ! empty( $this->select ) && is_array( $this->select ) ? join( ', ', $this->select ) : '*';
 
 		// append the table
 		$build[] = 'from ' . $this->table;

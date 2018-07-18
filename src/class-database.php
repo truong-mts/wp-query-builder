@@ -4,8 +4,6 @@
  */
 namespace TheLeague\Database;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Database class.
  */

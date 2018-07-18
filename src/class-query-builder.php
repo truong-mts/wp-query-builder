@@ -4,8 +4,6 @@
  */
 namespace TheLeague\Database;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Query_Builder class.
  */
@@ -23,13 +21,6 @@ class Query_Builder {
 	 * @var string
 	 */
 	protected $table = '';
-
-	/**
-	 * Type of query to translate in.
-	 *
-	 * @var string
-	 */
-	protected $handle = 'select';
 
 	/**
 	 * make a distinct selection
@@ -249,7 +240,6 @@ class Query_Builder {
 	}
 
 	private function reset() {
-		$this->handle     = 'select';
 		$this->distinct   = false;
 		$this->found_rows = false;
 		$this->select     = array();

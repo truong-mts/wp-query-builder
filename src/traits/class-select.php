@@ -4,12 +4,10 @@
  */
 namespace TheLeague\Database\Traits;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Select class.
  */
-class Select {
+trait Select {
 
 	/**
 	 * Set the selected fields
@@ -17,15 +15,25 @@ class Select {
 	 * @param  array $fields
 	 * @return self The current query builder.
 	 */
-	public function select() {
-		$this->handle = 'select';
-
-		$fields = \func_get_args();
+	public function select( $fields = '' ) {
 		if ( empty( $fields ) ) {
 			return $this;
 		}
 
-		$this->select = $this->select + $fields;
+		if ( is_string( $fields ) ) {
+			$this->select[] = $fields;
+			return $this;
+		}
+
+		foreach ( $fields as $key => $field ) {
+			if ( is_string( $key ) ) {
+				$this->select[] = "$key as $field";
+			} else {
+				$this->select[] = $field;
+			}
+		}
+
+		return $this;
 	}
 
 	/**
@@ -37,7 +45,7 @@ class Select {
 	 * @param string                $alias
 	 * @return self The current query builder.
 	 */
-	public function selectCount( $field, $alias = null ) { // @codingStandardsIgnoreLine
+	public function selectCount( $field = '*', $alias = null ) { // @codingStandardsIgnoreLine
 		return $this->selectFunc( 'count', $field, $alias );
 	}
 
@@ -76,8 +84,6 @@ class Select {
 	 * @return self The current query builder.
 	 */
 	public function selectFunc( $func, $field, $alias = null ) { // @codingStandardsIgnoreLine
-		$this->handle = 'select';
-
 		$field = "$func({$field})";
 		if ( ! is_null( $alias ) ) {
 			$field .= " as {$alias}";

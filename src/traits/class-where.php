@@ -4,12 +4,10 @@
  */
 namespace TheLeague\Database\Traits;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Where class.
  */
-class Where {
+trait Where {
 
 	/**
 	 * Create a where statement

@@ -4,12 +4,10 @@
  */
 namespace TheLeague\Database\Traits;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * OrderBy class.
  */
-class OrderBy {
+trait OrderBy {
 
 	/**
 	 * Add an order by statement to the current query
