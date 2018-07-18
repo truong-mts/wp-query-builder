@@ -34,8 +34,10 @@ matrix:
 	  env: WP_VERSION=latest
 	  dist: precise
 
+install:
+  - composer install
+
 before_script:
-	composer install
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
 	if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
