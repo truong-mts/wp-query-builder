@@ -10,7 +10,6 @@ class BuilderTest extends WP_UnitTestCase {
 	}
 
 	public function test_select_simple() {
-		$this->assertTrue( false );
 
 		$this->assertQueryTranslation( 'select * from phpunit', 'Select', function( $table ) {
 			$table->select();
@@ -25,7 +24,7 @@ class BuilderTest extends WP_UnitTestCase {
 		});
 	}
 
-	public function testSelectFields() {
+	public function test_select_fields() {
 
 		$this->assertQueryTranslation( 'select id from phpunit', 'Select', function( $table ) {
 			$table->select( 'id' );
@@ -55,7 +54,7 @@ class BuilderTest extends WP_UnitTestCase {
 		});
 	}
 
-	public function testSelectCount() {
+	public function test_select_count() {
 		$this->assertQueryTranslation( 'select count(*), foo as f from phpunit', 'Select', function( $table ) {
 			$table->selectCount()
 				->select( 'foo as f' );
@@ -66,7 +65,7 @@ class BuilderTest extends WP_UnitTestCase {
 		});
 	}
 
-	public function testSelectOthers() {
+	public function test_select_others() {
 
 		$this->assertQueryTranslation( 'select sum(id) as count from phpunit', 'Select', function( $table ) {
 			$table->selectSum( 'id', 'count' );
@@ -77,7 +76,7 @@ class BuilderTest extends WP_UnitTestCase {
 		});
 	}
 
-	public function testWhere() {
+	public function test_where() {
 		$this->assertQueryTranslation( 'select * from phpunit where id = 2', 'Select', function( $table ) {
 			$table->select()
 				->where( 'id', 2 );
