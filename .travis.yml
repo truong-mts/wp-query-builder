@@ -35,7 +35,7 @@ matrix:
 	  dist: precise
 
 install:
-  - composer install
+- composer install --no-interaction
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
