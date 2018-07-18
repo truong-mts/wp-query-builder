@@ -1,7 +1,10 @@
 <?php
 /**
  * The Query Builder
+ *
+ * @package TheLeague\Database
  */
+
 namespace TheLeague\Database\Traits;
 
 /**
@@ -12,7 +15,7 @@ trait Escape {
 	/**
 	 * Escape array values for sql
 	 *
-	 * @param  array $arr
+	 * @param  array $arr Array to escape.
 	 * @return array
 	 */
 	public function esc_array( $arr ) {
@@ -22,7 +25,7 @@ trait Escape {
 	/**
 	 * Escape value for sql
 	 *
-	 * @param  mixed $value
+	 * @param  mixed $value Value to escape.
 	 * @return mixed
 	 */
 	public function esc_value( $value ) {

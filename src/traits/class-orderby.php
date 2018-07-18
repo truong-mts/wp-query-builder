@@ -1,7 +1,10 @@
 <?php
 /**
  * The Query Builder
+ *
+ * @package TheLeague\Database
  */
+
 namespace TheLeague\Database\Traits;
 
 /**
@@ -21,8 +24,9 @@ trait OrderBy {
 	 *     // muliple order statements with diffrent directions
 	 *     ->orderBy(['firstname' => 'asc', 'lastname' => 'desc'])
 	 *
-	 * @param array|string $columns
-	 * @param string       $direction
+	 * @param array|string $columns   Columns.
+	 * @param string       $direction Direction.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function orderBy( $columns, $direction = 'asc' ) { // @codingStandardsIgnoreLine
@@ -43,7 +47,8 @@ trait OrderBy {
 	/**
 	 * Returns an string argument as parsed array if possible
 	 *
-	 * @param string  $argument
+	 * @param string $argument Argument to validate.
+	 *
 	 * @return array
 	 */
 	protected function argument_to_array( $argument ) {

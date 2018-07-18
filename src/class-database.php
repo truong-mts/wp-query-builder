@@ -1,7 +1,10 @@
 <?php
 /**
  * The Database
+ *
+ * @package TheLeague\Database
  */
+
 namespace TheLeague\Database;
 
 /**

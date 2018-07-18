@@ -77,9 +77,46 @@ class BuilderTest extends WP_UnitTestCase {
 	}
 
 	public function test_where() {
+
+		// Simple.
 		$this->assertQueryTranslation( 'select * from phpunit where id = 2', 'Select', function( $table ) {
 			$table->select()
 				->where( 'id', 2 );
+		});
+
+		// Diffrent expression.
+		$this->assertQueryTranslation( 'select * from phpunit where id != 42', 'Select', function( $table ) {
+			$table->select()
+				->where( 'id', '!=', 42 );
+		});
+
+		// 2 wheres AND.
+		$this->assertQueryTranslation( 'select * from phpunit where id = 2 and active = 1', 'Select', function( $table ) {
+			$table->select()
+				->where( 'id', 2 )
+				->where( 'active', 1 );
+		});
+
+		$this->assertQueryTranslation( 'select * from phpunit where id = 2 and active = 1', 'Select', function( $table ) {
+			$table->select()
+				->where( 'id', 2 )
+				->andWhere( 'active', 1 );
+		});
+
+		// 2 wheres AND.
+		$this->assertQueryTranslation( 'select * from phpunit where id = 42 or active = 1', 'Select', function( $table ) {
+			$table->select()
+				->where( 'id', 42 )
+				->orWhere( 'active', 1 );
+		});
+
+		// Nesting.
+		$this->assertQueryTranslation( 'select * from phpunit where ( a = \'b\' or c = \'d\' )', 'Select', function( $table ) {
+			$table->select()
+				->orWhere( array(
+					'a' => 'b',
+					'c' => 'd',
+				) );
 		});
 	}
 

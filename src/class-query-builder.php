@@ -1,7 +1,10 @@
 <?php
 /**
  * The Query Builder
+ *
+ * @package TheLeague\Database
  */
+
 namespace TheLeague\Database;
 
 /**
@@ -23,14 +26,14 @@ class Query_Builder {
 	protected $table = '';
 
 	/**
-	 * make a distinct selection
+	 * Make a distinct selection
 	 *
 	 * @var bool
 	 */
 	protected $distinct = false;
 
 	/**
-	 * make SQL_CALC_FOUND_ROWS in selection
+	 * Make SQL_CALC_FOUND_ROWS in selection
 	 *
 	 * @var bool
 	 */
@@ -51,21 +54,21 @@ class Query_Builder {
 	protected $wheres = array();
 
 	/**
-	 * order by container
+	 * Order by container
 	 *
 	 * @var array
 	 */
 	protected $orders = array();
 
 	/**
-	 * the query limit
+	 * The query limit
 	 *
 	 * @var int
 	 */
 	protected $limit = null;
 
 	/**
-	 * values container for insert/update
+	 * Values container for insert/update
 	 *
 	 * @var array
 	 */
@@ -73,6 +76,8 @@ class Query_Builder {
 
 	/**
 	 * Constructor
+	 *
+	 * @param string $table The table name.
 	 */
 	public function __construct( $table ) {
 		$this->table = $table;
@@ -82,6 +87,7 @@ class Query_Builder {
 	 * Translate the given query object and return the results
 	 *
 	 * @param string $output (Optional) Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants.
+	 *
 	 * @return mixed
 	 */
 	public function get( $output = OBJECT ) {
@@ -97,6 +103,7 @@ class Query_Builder {
 	 * Translate the given query object and return the results
 	 *
 	 * @param string $output (Optional) Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants.
+	 *
 	 * @return mixed
 	 */
 	public function one( $output = OBJECT ) {
@@ -114,7 +121,7 @@ class Query_Builder {
 	 *
 	 * @return mixed
 	 */
-	public function var() {
+	public function getVar() { // @codingStandardsIgnoreLine
 		$row = $this->one( ARRAY_A );
 
 		return current( $row );
@@ -168,6 +175,7 @@ class Query_Builder {
 
 	/**
 	 * Get found rows.
+	 *
 	 * @return int
 	 */
 	public function get_found_rows() {
@@ -190,8 +198,8 @@ class Query_Builder {
 	/**
 	 * Set the limit clause.
 	 *
-	 * @param int $limit
-	 * @param int $offset
+	 * @param int $limit  Limit size.
+	 * @param int $offset Offeset.
 	 *
 	 * @return self The current query builder.
 	 */
@@ -208,8 +216,8 @@ class Query_Builder {
 	/**
 	 * Create an query limit based on a page and a page size
 	 *
-	 * @param int        $page
-	 * @param int         $size
+	 * @param int $page Page number.
+	 * @param int $size Page size.
 	 *
 	 * @return self The current query builder.
 	 */
@@ -225,8 +233,8 @@ class Query_Builder {
 	/**
 	 * Set values for insert/update
 	 *
-	 * @param string|array $name
-	 * @param string|array $value
+	 * @param string|array $name  Key of pair.
+	 * @param string|array $value Value of pair.
 	 */
 	public function set( $name, $value ) {
 
@@ -239,6 +247,9 @@ class Query_Builder {
 		return $this;
 	}
 
+	/**
+	 * Reset all vaiables.
+	 */
 	private function reset() {
 		$this->distinct   = false;
 		$this->found_rows = false;

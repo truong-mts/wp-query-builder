@@ -1,7 +1,10 @@
 <?php
 /**
  * The Query Builder
+ *
+ * @package TheLeague\Database
  */
+
 namespace TheLeague\Database\Traits;
 
 /**
@@ -30,7 +33,7 @@ trait Where {
 			throw new Exception( 'Invalid where type "' . $type . '"' );
 		}
 
-		if ( empty( $this->wheres ) ) {
+		if ( ! is_array( $column ) && empty( $this->wheres ) ) {
 			$type = 'where';
 		}
 
@@ -41,7 +44,7 @@ trait Where {
 				$subquery[] = $this->generateWhere( $key, $val, null, $type );
 			}
 
-			$this->wheres[] = array( 'subquery', $subquery );
+			$this->wheres[] = array( 'subquery', $subquery, empty( $this->wheres ) );
 
 			return $this;
 		}

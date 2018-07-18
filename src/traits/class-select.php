@@ -1,7 +1,10 @@
 <?php
 /**
  * The Query Builder
+ *
+ * @package TheLeague\Database
  */
+
 namespace TheLeague\Database\Traits;
 
 /**
@@ -12,7 +15,8 @@ trait Select {
 	/**
 	 * Set the selected fields
 	 *
-	 * @param  array $fields
+	 * @param array $fields Fields to select.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function select( $fields = '' ) {
@@ -41,8 +45,8 @@ trait Select {
 	 *
 	 *     ->selectCount('id')
 	 *
-	 * @param string                $field
-	 * @param string                $alias
+	 * @param string $field
+	 * @param string $alias
 	 * @return self The current query builder.
 	 */
 	public function selectCount( $field = '*', $alias = null ) { // @codingStandardsIgnoreLine

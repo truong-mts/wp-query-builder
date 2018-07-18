@@ -1,7 +1,10 @@
 <?php
 /**
  * The Query Builder
+ *
+ * @package TheLeague\Database
  */
+
 namespace TheLeague\Database\Traits;
 
 /**
@@ -24,23 +27,23 @@ trait Translate {
 			$build[] = 'distinct';
 		}
 
-		// build the selected fields
+		// Build the selected fields.
 		$build[] = ! empty( $this->select ) && is_array( $this->select ) ? join( ', ', $this->select ) : '*';
 
-		// append the table
+		// Append the table.
 		$build[] = 'from ' . $this->table;
 
-		// build the where statements
+		// Build the where statements.
 		if ( ! empty( $this->wheres ) ) {
 			$build[] = $this->translateWhere( $this->wheres );
 		}
 
-		// build the order statement
+		// Build the order statement.
 		if ( ! empty( $this->orders ) ) {
 			$build[] = $this->translateOrderBy();
 		}
 
-		// build offset and limit
+		// Build offset and limit.
 		if ( ! empty( $this->limit ) ) {
 			$build[] = $this->limit;
 		}
@@ -61,12 +64,12 @@ trait Translate {
 			$build[] = $key . ' = ' . $this->esc_value( $value );
 		}
 
-		// build the where statements
+		// Build the where statements.
 		if ( ! empty( $this->wheres ) ) {
 			$build[] = $this->translateWhere( $this->wheres );
 		}
 
-		// build offset and limit
+		// Build offset and limit.
 		if ( ! empty( $this->limit ) ) {
 			$build[] = $this->limit;
 		}
@@ -82,12 +85,12 @@ trait Translate {
 	private function translateDelete() { // @codingStandardsIgnoreLine
 		$build = array( "delete from {$this->table}" );
 
-		// build the where statements
+		// Build the where statements.
 		if ( ! empty( $this->wheres ) ) {
 			$build[] = $this->translateWhere( $this->wheres );
 		}
 
-		// build offset and limit
+		// Build offset and limit.
 		if ( ! empty( $this->limit ) ) {
 			$build[] = $this->limit;
 		}
@@ -98,27 +101,32 @@ trait Translate {
 	/**
 	 * Translate the where statements into sql
 	 *
+	 * @param array $wheres Where statements.
+	 *
 	 * @return string
 	 */
 	protected function translateWhere( $wheres ) { // @codingStandardsIgnoreLine
 		$build = array();
 		foreach ( $wheres as $where ) {
 
-			// to make nested wheres possible you can pass an closure
-			// wich will create a new query where you can add your nested wheres
-			if ( ! isset( $where[2] ) && 'subquery' === $where[1] ) {
-				$build[] = '( ' . substr( $this->translateWhere( $where[1] ), 6 ) . ' )';
+			// To make nested wheres possible you can pass an closure.
+			// Wich will create a new query where you can add your nested wheres.
+			if ( isset( $where[0] ) && 'subquery' === $where[0] ) {
+				unset( $where[1][0][0] );
+				if ( true == $where[2] ) {
+					$build[] = 'where';
+				}
+				$build[] = '( ' . $this->translateWhere( $where[1] ) . ' )';
 				continue;
 			}
 
-			// when we have an array as where values we have to parameterize them
+			// When we have an array as where values we have to parameterize them.
 			if ( is_array( $where[3] ) ) {
 				$where[3] = '(' . join( ', ', $this->esc_array( $where[3] ) ) . ')';
 			} elseif ( is_scalar( $where[3] ) ) {
 				$where[3] = $this->esc_value( $where[3] );
 			}
 
-			// join the beauty
 			$build[] = join( ' ', $where );
 		}
 
