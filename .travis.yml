@@ -34,9 +34,6 @@ matrix:
 	  env: WP_VERSION=latest
 	  dist: precise
 
-install:
-	- composer install --no-interaction
-
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
