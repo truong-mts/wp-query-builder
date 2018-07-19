@@ -22,5 +22,8 @@
 	},
 	"config": {
 		"optimize-autoloader": true
+	},
+	"archive": {
+		"exclude": [ "/bin", "/tests/", ".gitattributes", ".gitignore", ".travis.yml", ".phpcs.xml.dist", "phpunit.xml.dist", "README.md" ]
 	}
 }
