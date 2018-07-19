@@ -276,6 +276,17 @@ class BuilderTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * MySql grammar tests
+	 */
+	public function test_groupby() {
+		$this->assertQueryTranslation( 'select count(id) as incoming, target_post_id as post_id from phpunit where target_post_id in (100, 120, 123) group by target_post_id', 'Select', function( $table ) {
+			$table->selectCount( 'id', 'incoming' )->select( 'target_post_id as post_id' )
+				->whereIn( 'target_post_id', array( 100, 120, 123 ) )
+				->groupBy( 'target_post_id' );
+		});
+	}
+
+	/**
 	 * Assert SQL Query.
 	 *
 	 * @param  [type] $expected  [description].

@@ -38,6 +38,11 @@ trait Translate {
 			$build[] = $this->translateWhere( $this->wheres );
 		}
 
+		// Build the group by statements.
+		if ( ! empty( $this->groups ) ) {
+			$build[] = 'group by ' . join( ', ', $this->groups );
+		}
+
 		// Build the order statement.
 		if ( ! empty( $this->orders ) ) {
 			$build[] = $this->translateOrderBy();

@@ -15,6 +15,7 @@ class Query_Builder {
 	use \TheLeague\Database\Traits\Escape;
 	use \TheLeague\Database\Traits\Select;
 	use \TheLeague\Database\Traits\Where;
+	use \TheLeague\Database\Traits\GroupBy;
 	use \TheLeague\Database\Traits\OrderBy;
 	use \TheLeague\Database\Traits\Translate;
 
@@ -73,6 +74,13 @@ class Query_Builder {
 	 * @var array
 	 */
 	protected $values = array();
+
+	/**
+	 * Group by container
+	 *
+	 * @var array
+	 */
+	protected $groups = array();
 
 	/**
 	 * Constructor
@@ -270,6 +278,7 @@ class Query_Builder {
 		$this->wheres     = array();
 		$this->orders     = array();
 		$this->values     = array();
+		$this->groups     = array();
 		$this->limit      = null;
 
 		return $this;

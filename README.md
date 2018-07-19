@@ -199,6 +199,15 @@ $table->select()->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
 
 ---
 
+### Groupby statement
+
+```php
+// select * from wp_users group by id
+$table->select()->groupBy( 'id' )->get();
+```
+
+---
+
 ### Orderby statement
 
 ```php
