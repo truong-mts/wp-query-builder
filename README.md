@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/meshakeeb/wp-query-builder.svg?branch=master)](https://travis-ci.org/meshakeeb/wp-query-builder)
+
 # WordPress Query Builder
 
 An expressive query builder for WordPress based on Laravel's Query Builder. Wraps the `$wpdb` global.
