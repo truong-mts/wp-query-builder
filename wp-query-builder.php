@@ -1,5 +1,13 @@
 <?php
 /**
+ * WordPress Query Builder
+ *
+ * @package      TheLeague\Database
+ * @copyright    Copyright (C) 2018, The WordPress League - info@thewpleague.com
+ * @link         http://thewpleague.com
+ * @since        1.0.0
+ *
+ * @wordpress-plugin
  * Plugin Name:       WordPress Query Builder
  * Version:           1.0.0
  * Plugin URI:        http://thewpleague.com/wp-query-builder/
@@ -11,7 +19,6 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-define( 'RANK_MATH_FILE', __FILE__ );
 
 /**
  * PSR-4 Autoload.
