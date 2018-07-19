@@ -41,6 +41,7 @@ trait OrderBy {
 				$this->orders[ $key ] = $column;
 			}
 		}
+
 		return $this;
 	}
 

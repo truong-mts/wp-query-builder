@@ -1,6 +1,15 @@
 <?php
 /**
  * BuilderTest class.
+ *
+ * This file contains test for the library.
+ *
+ * @package TheLeague\Database
+ * @author  Shakeeb Ahmed <me@shakeebahmed.com>
+ */
+
+/**
+ * Builder Test Class
  */
 class BuilderTest extends WP_UnitTestCase {
 

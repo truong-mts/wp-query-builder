@@ -44,9 +44,11 @@ trait Select {
 	 * Shortcut to add a count function
 	 *
 	 *     ->selectCount('id')
+	 *     ->selectCount('id', 'count')
 	 *
-	 * @param string $field
-	 * @param string $alias
+	 * @param string $field Column name.
+	 * @param string $alias (Optional) Column alias.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function selectCount( $field = '*', $alias = null ) { // @codingStandardsIgnoreLine
@@ -57,9 +59,11 @@ trait Select {
 	 * Shortcut to add a sum function
 	 *
 	 *     ->selectSum('id')
+	 *     ->selectSum('id', 'total')
 	 *
-	 * @param string                $field
-	 * @param string                $alias
+	 * @param string $field Column name.
+	 * @param string $alias (Optional) Column alias.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function selectSum( $field, $alias = null ) { // @codingStandardsIgnoreLine
@@ -70,9 +74,11 @@ trait Select {
 	 * Shortcut to add a avg function
 	 *
 	 *     ->selectAvg('id')
+	 *     ->selectAvg('id', 'average')
 	 *
-	 * @param string                $field
-	 * @param string                $alias
+	 * @param string $field Column name.
+	 * @param string $alias (Optional) Column alias.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function selectAvg( $field, $alias = null ) { // @codingStandardsIgnoreLine
@@ -82,9 +88,10 @@ trait Select {
 	/**
 	 * Shortcut to add a function
 	 *
-	 * @param string $func
-	 * @param string $field
-	 * @param string $alias
+	 * @param string $func  Function name.
+	 * @param string $field Column name.
+	 * @param string $alias (Optional) Column alias.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function selectFunc( $func, $field, $alias = null ) { // @codingStandardsIgnoreLine
@@ -100,7 +107,8 @@ trait Select {
 	/**
 	 * Distinct select setter
 	 *
-	 * @param bool $distinct
+	 * @param bool $distinct Is disticnt.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function distinct( $distinct = true ) {
@@ -111,7 +119,8 @@ trait Select {
 	/**
 	 * SQL_CALC_FOUND_ROWS select setter
 	 *
-	 * @param bool $found_rows
+	 * @param bool $found_rows Should get found rows.
+	 *
 	 * @return self The current query builder.
 	 */
 	public function found_rows( $found_rows = true ) {

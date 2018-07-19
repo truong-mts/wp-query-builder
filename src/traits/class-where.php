@@ -19,16 +19,18 @@ trait Where {
 	 *     ->where('age', '>', 18)
 	 *     ->where('name', 'in', array('charles', 'john', 'jeffry'))
 	 *
-	 * @param string            $column The SQL column
-	 * @param mixed             $param1 Operator or value depending if $param2 isset.
-	 * @param mixed             $param2 The value if $param1 is an opartor.
-	 * @param string            $type the where type ( and, or )
+	 * @throws Exception If $type is not 'and', 'or', 'where'.
+	 *
+	 * @param string $column The SQL column.
+	 * @param mixed  $param1 Operator or value depending if $param2 isset.
+	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 * @param string $type the where type ( and, or ).
 	 *
 	 * @return self The current query builder.
 	 */
 	public function where( $column, $param1 = null, $param2 = null, $type = 'and' ) {
 
-		// check if the where type is valid
+		// Check if the where type is valid.
 		if ( ! in_array( $type, array( 'and', 'or', 'where' ) ) ) {
 			throw new Exception( 'Invalid where type "' . $type . '"' );
 		}
@@ -38,7 +40,7 @@ trait Where {
 			$type = 'where';
 		}
 
-		// when column is an array we assume to make a bulk and where.
+		// When column is an array we assume to make a bulk and where.
 		if ( is_array( $column ) ) {
 			$subquery = array();
 			foreach ( $column as $value ) {
@@ -61,6 +63,12 @@ trait Where {
 
 	/**
 	 * Create an or where statement
+	 *
+	 * @param string $column The SQL column.
+	 * @param mixed  $param1 Operator or value depending if $param2 isset.
+	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 *
+	 * @return self The current query builder.
 	 */
 	public function orWhere( $column, $param1 = null, $param2 = null ) { // @codingStandardsIgnoreLine
 		return $this->where( $column, $param1, $param2, 'or' );
@@ -68,6 +76,12 @@ trait Where {
 
 	/**
 	 * Create an and where statement
+	 *
+	 * @param string $column The SQL column.
+	 * @param mixed  $param1 Operator or value depending if $param2 isset.
+	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 *
+	 * @return self The current query builder.
 	 */
 	public function andWhere( $column, $param1 = null, $param2 = null ) { // @codingStandardsIgnoreLine
 		return $this->where( $column, $param1, $param2, 'and' );
@@ -77,10 +91,14 @@ trait Where {
 	 * Creates a where in statement
 	 *
 	 *     ->whereIn('id', [42, 38, 12])
+	 *
+	 * @param string $column The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
 	 */
 	public function whereIn( $column, $options = array() ) { // @codingStandardsIgnoreLine
 
-		// when the options are empty we skip
 		if ( empty( $options ) ) {
 			return $this;
 		}
@@ -92,6 +110,9 @@ trait Where {
 	 * Creates a where like statement
 	 *
 	 *     ->whereIn('id', 'value' )
+	 *
+	 * @param string $column The SQL column.
+	 * @param mixed  $value Value for like statement.
 	 */
 	public function whereLike( $column, $value ) { // @codingStandardsIgnoreLine
 		global $wpdb;
@@ -99,9 +120,14 @@ trait Where {
 	}
 
 	/**
-	 * Generate Where
+	 * Generate Where clause
 	 *
-	 * @see where()
+	 * @param string $column The SQL column.
+	 * @param mixed  $param1 Operator or value depending if $param2 isset.
+	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 * @param string $type the where type ( and, or ).
+	 *
+	 * @return self The current query builder.
 	 */
 	protected function generateWhere( $column, $param1 = null, $param2 = null, $type = 'and' ) { // @codingStandardsIgnoreLine
 
