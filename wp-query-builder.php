@@ -5,11 +5,11 @@
  * @package      TheLeague\Database
  * @copyright    Copyright (C) 2018, The WordPress League - info@thewpleague.com
  * @link         http://thewpleague.com
- * @since        1.0.4
+ * @since        1.0.5
  *
  * @wordpress-plugin
  * Plugin Name:       WordPress Query Builder
- * Version:           1.0.4
+ * Version:           1.0.5
  * Plugin URI:        http://thewpleague.com/wp-query-builder/
  * Description:       An expressive query builder for WordPress based on Laravel's Query Builder. Wraps the $wpdb global.
  * Author:            The WordPress League

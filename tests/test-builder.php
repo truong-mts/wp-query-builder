@@ -269,6 +269,14 @@ class BuilderTest extends WP_UnitTestCase {
 				->set( 'bar', 'foo' );
 		});
 
+		// Array.
+		$this->assertQueryTranslation( 'update phpunit set foo = \'bar\', bar = \'foo\'', 'Update', function( $table ) {
+			$table->set(array(
+				'foo' => 'bar',
+				'bar' => 'foo',
+			));
+		});
+
 		// With where and limit.
 		$this->assertQueryTranslation( 'update phpunit set foo = \'bar\', bar = \'foo\' where id = 1 limit 0, 1', 'Update', function( $table ) {
 			$table

@@ -255,10 +255,10 @@ class Query_Builder {
 	 *
 	 * @return self The current query builder.
 	 */
-	public function set( $name, $value ) {
+	public function set( $name, $value = null ) {
 
 		if ( is_array( $name ) ) {
-			$this->values = $this->values + $value;
+			$this->values = $this->values + $name;
 		} else {
 			$this->values[ $name ] = $value;
 		}

@@ -134,6 +134,12 @@ $table->set( 'foo', 'bar' )
 	->set( 'bar', 'foo' )
 	->update();
 
+// update wp_users set foo = `bar`, bar = `foo`
+$table->set(array(
+	'foo' => 'bar',
+	'bar' => 'foo',
+))->update();
+
 // update wp_users set foo = `bar` where id = 1 limit 0,1
 $table->set( 'foo', 'bar' )
 	->where( 'id', 1 )
