@@ -127,16 +127,18 @@ $table->insert(array(
 
 ```php
 // update wp_users set foo = `bar`
-$table->set( 'foo', 'bar' );
+$table->set( 'foo', 'bar' )->update();
 
 // update wp_users set foo = `bar`, bar = `foo`
 $table->set( 'foo', 'bar' )
-	->set( 'bar', 'foo' );
+	->set( 'bar', 'foo' )
+	->update();
 
 // update wp_users set foo = `bar` where id = 1 limit 0,1
 $table->set( 'foo', 'bar' )
 	->where( 'id', 1 )
-	->limit( 1 );
+	->limit( 1 )
+	->update();
 ```
 
 ---
@@ -145,7 +147,10 @@ $table->set( 'foo', 'bar' )
 
 ```php
 // delete from wp_users where id = 1 limit 0,1
-$table->where( 'id', 1 )->limit( 1 );
+$table->where( 'id', 1 )->limit( 1 )->delete();
+
+// truncate table wp_users
+$table->truncate();
 ```
 
 ---
