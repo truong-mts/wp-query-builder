@@ -83,6 +83,13 @@ class Query_Builder {
 	protected $groups = array();
 
 	/**
+	 * Save last query.
+	 *
+	 * @var string
+	 */
+	protected $last_query = '';
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $table The table name.
@@ -101,10 +108,10 @@ class Query_Builder {
 	public function get( $output = OBJECT ) {
 		global $wpdb;
 
-		$query = $this->translateSelect();
+		$this->last_query = $this->translateSelect();
 		$this->reset();
 
-		return $wpdb->get_results( $query, $output ); // WPCS: unprepared SQL ok.
+		return $wpdb->get_results( $this->last_query, $output ); // WPCS: unprepared SQL ok.
 	}
 
 	/**
@@ -118,10 +125,10 @@ class Query_Builder {
 		global $wpdb;
 
 		$this->limit( 1 );
-		$query = $this->translateSelect();
+		$this->last_query = $this->translateSelect();
 		$this->reset();
 
-		return $wpdb->get_row( $query, $output ); // WPCS: unprepared SQL ok.
+		return $wpdb->get_row( $this->last_query, $output ); // WPCS: unprepared SQL ok.
 	}
 
 	/**
@@ -208,6 +215,7 @@ class Query_Builder {
 	 */
 	public function query( $query ) {
 		global $wpdb;
+		$this->last_query = $query;
 
 		return $wpdb->query( $query ); // WPCS: unprepared SQL ok.
 	}
