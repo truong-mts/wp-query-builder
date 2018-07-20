@@ -17,7 +17,7 @@ trait Where {
 	 *
 	 *     ->where('name', 'ladina')
 	 *     ->where('age', '>', 18)
-	 *     ->where('name', 'in', array('charles', 'john', 'jeffry'))
+	 *     ->where('name', 'in', ['charles', 'john', 'jeffry'])
 	 *
 	 * @throws Exception If $type is not 'and', 'or', 'where'.
 	 *
@@ -109,7 +109,7 @@ trait Where {
 	/**
 	 * Creates a where between statement
 	 *
-	 *     ->whereBetween( 'id', [10, 100])
+	 *     ->whereBetween('id', [10, 100])
 	 *
 	 * @param string $column The SQL column.
 	 * @param array  $options Array of values for in statement.
@@ -128,7 +128,7 @@ trait Where {
 	/**
 	 * Creates a where not between statement
 	 *
-	 *     ->whereNotBetween( 'id', [10, 100])
+	 *     ->whereNotBetween('id', [10, 100])
 	 *
 	 * @param string $column The SQL column.
 	 * @param array  $options Array of values for in statement.
@@ -147,14 +147,29 @@ trait Where {
 	/**
 	 * Creates a where like statement
 	 *
-	 *     ->whereIn('id', 'value' )
+	 *     ->whereLike('id', 'value')
 	 *
 	 * @param string $column The SQL column.
-	 * @param mixed  $value Value for like statement.
+	 * @param string $value  Value for like statement.
+	 * @param string $start  (Optional) The start of like query.
+	 * @param string $end    (Optional) The end of like query.
 	 */
-	public function whereLike( $column, $value ) { // @codingStandardsIgnoreLine
-		global $wpdb;
-		return $this->where( $column, 'like', '%' . $wpdb->esc_like( $value ) . '%' );
+	public function whereLike( $column, $value, $start = '%', $end = '%' ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'like', $this->esc_like( $value, $start, $end ) );
+	}
+
+	/**
+	 * Creates a where not like statement
+	 *
+	 *     ->whereNotLike('id', 'value' )
+	 *
+	 * @param string $column The SQL column.
+	 * @param mixed  $value  Value for like statement.
+	 * @param string $start  (Optional) The start of like query.
+	 * @param string $end    (Optional) The end of like query.
+	 */
+	public function whereNotLike( $column, $value, $start = '%', $end = '%' ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'not like', $this->esc_like( $value, $start, $end ) );
 	}
 
 	/**

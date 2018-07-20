@@ -173,6 +173,15 @@ class BuilderTest extends WP_UnitTestCase {
 				->andWhere( 'c', 30 );
 		});
 
+		$this->assertQueryTranslation( 'select * from phpunit where is_active = 1 and ( options like \'a\' or options like \'b\' )', 'Select', function( $table ) {
+			$table->select()
+				->where( 'is_active', 1 )
+				->where( array(
+					array( 'options', 'like', 'a' ),
+					array( 'options', 'like', 'b' ),
+				), 'or' );
+		});
+
 		// Where In.
 		$this->assertQueryTranslation( 'select * from phpunit where id in (23, 25, 30)', 'Select', function( $table ) {
 			$table->select()->whereIn( 'id', array( 23, 25, 30 ) );
