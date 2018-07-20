@@ -24,7 +24,14 @@ class Query_Builder {
 	 *
 	 * @var string
 	 */
-	protected $table = '';
+	public $table = '';
+
+	/**
+	 * Save last query.
+	 *
+	 * @var string
+	 */
+	public $last_query = '';
 
 	/**
 	 * Make a distinct selection
@@ -81,13 +88,6 @@ class Query_Builder {
 	 * @var array
 	 */
 	protected $groups = array();
-
-	/**
-	 * Save last query.
-	 *
-	 * @var string
-	 */
-	protected $last_query = '';
 
 	/**
 	 * Constructor
