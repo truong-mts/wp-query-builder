@@ -107,6 +107,44 @@ trait Where {
 	}
 
 	/**
+	 * Creates a where between statement
+	 *
+	 *     ->whereBetween( 'id', [10, 100])
+	 *
+	 * @param string $column The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function whereBetween( $column, $options = array() ) { // @codingStandardsIgnoreLine
+
+		if ( empty( $options ) ) {
+			return $this;
+		}
+
+		return $this->where( $column, 'between', $options );
+	}
+
+	/**
+	 * Creates a where not between statement
+	 *
+	 *     ->whereNotBetween( 'id', [10, 100])
+	 *
+	 * @param string $column The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function whereNotBetween( $column, $options = array() ) { // @codingStandardsIgnoreLine
+
+		if ( empty( $options ) ) {
+			return $this;
+		}
+
+		return $this->where( $column, 'not between', $options );
+	}
+
+	/**
 	 * Creates a where like statement
 	 *
 	 *     ->whereIn('id', 'value' )
@@ -141,7 +179,12 @@ trait Where {
 		// When param2 is an array we probably
 		// have an "in" or "between" statement which has no need for duplicates.
 		if ( is_array( $param2 ) ) {
-			$param2 = '(' . join( ', ', $this->esc_array( array_unique( $param2 ) ) ) . ')';
+			$param2 = $this->esc_array( array_unique( $param2 ) );
+			if ( in_array( $param1, array( 'between', 'not between' ) ) ) {
+				$param2 = join( ' and ', $param2 );
+			} else {
+				$param2 = '(' . join( ', ', $param2 ) . ')';
+			}
 		} elseif ( is_scalar( $param2 ) ) {
 			$param2 = $this->esc_value( $param2 );
 		}

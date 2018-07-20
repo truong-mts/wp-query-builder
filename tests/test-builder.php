@@ -173,12 +173,27 @@ class BuilderTest extends WP_UnitTestCase {
 				->andWhere( 'c', 30 );
 		});
 
+		// Where In.
 		$this->assertQueryTranslation( 'select * from phpunit where id in (23, 25, 30)', 'Select', function( $table ) {
 			$table->select()->whereIn( 'id', array( 23, 25, 30 ) );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where skills in (\'php\', \'javascript\', \'ruby\')', 'Select', function( $table ) {
 			$table->select()->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
+		});
+
+		// Where between.
+		$this->assertQueryTranslation( 'select * from phpunit where id between 10 and 100', 'Select', function( $table ) {
+			$table->select()->whereBetween( 'id', array( 10, 100 ) );
+		});
+
+		$this->assertQueryTranslation( 'select * from phpunit where dates between \'10-04-2018\' and \'10-09-2018\'', 'Select', function( $table ) {
+			$table->select()->whereBetween( 'dates', array( '10-04-2018', '10-09-2018' ) );
+		});
+
+		// Where not between.
+		$this->assertQueryTranslation( 'select * from phpunit where id not between 10 and 100', 'Select', function( $table ) {
+			$table->select()->whereNotBetween( 'id', array( 10, 100 ) );
 		});
 	}
 

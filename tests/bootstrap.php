@@ -5,8 +5,15 @@
  * @package Wp_Query_Builder
  */
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
+// Disable xdebug backtrace.
+if ( function_exists( 'xdebug_disable' ) ) {
+	xdebug_disable();
+}
 
+echo 'Welcome to the WordPress Query Builder Test Suite' . PHP_EOL;
+echo 'Version: 1.0' . PHP_EOL . PHP_EOL;
+
+$_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
 }

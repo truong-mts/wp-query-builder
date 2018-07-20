@@ -195,6 +195,15 @@ $table->select()->whereIn( 'id', array( 23, 25, 30 ) );
 
 // select * from wp_users where skills in ('php', 'javascript', 'ruby')
 $table->select()->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
+
+// select * from wp_users where id between 10 and 100
+$table->select()->whereBetween( 'id', array( 10, 100 ) );
+
+// select * from wp_users where id not between 10 and 100
+$table->select()->whereNotBetween( 'id', array( 10, 100 ) );
+
+// select * from wp_users where dates between '10-04-2018' and '10-09-2018'
+$table->select()->whereBetween( 'dates', array( '10-04-2018', '10-09-2018' ) );
 ```
 
 ---
