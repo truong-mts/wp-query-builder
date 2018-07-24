@@ -23,7 +23,7 @@ trait Where {
 	 *
 	 * @param string $column The SQL column.
 	 * @param mixed  $param1 Operator or value depending if $param2 isset.
-	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 * @param mixed  $param2 The value if $param1 is an operator.
 	 * @param string $type the where type ( and, or ).
 	 *
 	 * @return self The current query builder.
@@ -36,7 +36,7 @@ trait Where {
 		}
 
 		$sub_type = is_null( $param1 ) ? $type : $param1;
-		if ( empty( $this->wheres ) ) {
+		if ( empty( $this->statements['wheres'] ) ) {
 			$type = 'where';
 		}
 
@@ -51,12 +51,12 @@ trait Where {
 				$subquery[] = $this->generateWhere( $value[0], $value[1], $value[2], empty( $subquery ) ? '' : $sub_type );
 			}
 
-			$this->wheres[] = $type . ' ( ' . trim( join( ' ', $subquery ) ) . ' )';
+			$this->statements['wheres'][] = $type . ' ( ' . trim( join( ' ', $subquery ) ) . ' )';
 
 			return $this;
 		}
 
-		$this->wheres[] = $this->generateWhere( $column, $param1, $param2, $type );
+		$this->statements['wheres'][] = $this->generateWhere( $column, $param1, $param2, $type );
 
 		return $this;
 	}
@@ -66,7 +66,7 @@ trait Where {
 	 *
 	 * @param string $column The SQL column.
 	 * @param mixed  $param1 Operator or value depending if $param2 isset.
-	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 * @param mixed  $param2 The value if $param1 is an operator.
 	 *
 	 * @return self The current query builder.
 	 */
@@ -79,7 +79,7 @@ trait Where {
 	 *
 	 * @param string $column The SQL column.
 	 * @param mixed  $param1 Operator or value depending if $param2 isset.
-	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 * @param mixed  $param2 The value if $param1 is an operator.
 	 *
 	 * @return self The current query builder.
 	 */
@@ -104,6 +104,25 @@ trait Where {
 		}
 
 		return $this->where( $column, 'in', $options );
+	}
+
+	/**
+	 * Creates a where not in statement
+	 *
+	 *     ->whereNotIn('id', [42, 38, 12])
+	 *
+	 * @param string $column The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function whereNotIn( $column, $options = array() ) { // @codingStandardsIgnoreLine
+
+		if ( empty( $options ) ) {
+			return $this;
+		}
+
+		return $this->where( $column, 'not in', $options );
 	}
 
 	/**
@@ -173,11 +192,33 @@ trait Where {
 	}
 
 	/**
+	 * Creates a where is null statement
+	 *
+	 *     ->whereNull( 'name' )
+	 *
+	 * @param string $column The SQL column.
+	 */
+	public function whereNull( $column ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'is', 'null' );
+	}
+
+	/**
+	 * Creates a where is not null statement
+	 *
+	 *     ->whereNotNull( 'name' )
+	 *
+	 * @param string $column The SQL column.
+	 */
+	public function whereNotNull( $column ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'is not', 'null' );
+	}
+
+	/**
 	 * Generate Where clause
 	 *
 	 * @param string $column The SQL column.
 	 * @param mixed  $param1 Operator or value depending if $param2 isset.
-	 * @param mixed  $param2 The value if $param1 is an opartor.
+	 * @param mixed  $param2 The value if $param1 is an operator.
 	 * @param string $type the where type ( and, or ).
 	 *
 	 * @return self The current query builder.

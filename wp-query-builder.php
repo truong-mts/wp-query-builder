@@ -5,17 +5,19 @@
  * @package      TheLeague\Database
  * @copyright    Copyright (C) 2018, The WordPress League - info@thewpleague.com
  * @link         http://thewpleague.com
- * @since        1.0.6
+ * @since        1.0.7
  *
  * @wordpress-plugin
  * Plugin Name:       WordPress Query Builder
- * Version:           1.0.6
+ * Version:           1.0.7
  * Plugin URI:        http://thewpleague.com/wp-query-builder/
- * Description:       An expressive query builder for WordPress based on Laravel's Query Builder. Wraps the $wpdb global.
+ * Description:       An expressive query builder for WordPress based on Laravel's Query Builder. Build for developers by developers.
  * Author:            The WordPress League
  * Author URI:        http://thewpleague.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Requires at least: 4.0
+ * Tested up to:      4.8
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -24,3 +26,15 @@ defined( 'ABSPATH' ) || exit;
  * PSR-4 Autoload.
  */
 include dirname( __FILE__ ) . '/vendor/autoload.php';
+
+if ( ! function_exists( 'wp_query_builder' ) ) {
+	/**
+	 * Make wp query builder as global scope.
+	 *
+	 * @param  string $table_name A Database instance id.
+	 * @return Database Database object instance.
+	 */
+	function wp_query_builder( $table_name ) {
+		return TheLeague\Database\Database::table( $table_name );
+	}
+}

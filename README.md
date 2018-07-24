@@ -21,8 +21,7 @@ global $wpdb;
 
 $table = new TheLeague\Database\Database::table( $wpdb->prefix . 'users' );
 
-$table->select()
-  ->where( 'id', 2 )
+$table->where( 'id', 2 )
   ->orderBy( 'id', 'desc' )
   ->limit( 20 )
   ->get();
@@ -49,13 +48,13 @@ global $wpdb;
 $table = new TheLeague\Database\Database::table( $wpdb->prefix . 'users' )
 
 // select * from wp_users
-$table->select()->get();
+$table->get();
 
 // select distinct * from wp_users
-$table->select()->distinct()->get();
+$table->distinct()->get();
 
 // select SQL_CALC_FOUND_ROWS * from wp_users
-$table->select()->found_rows()->get();
+$table->found_rows()->get();
 ```
 
 #### Specify columns for Select statement
@@ -100,7 +99,7 @@ $table->selectAvg( 'id', 'average' )->get();
 
 ```php
 // select * from wp_users WHERE user_email = 'admin@example.com' LIMIT 0, 1;
-$table->select()->where( 'user_email', 'admin@example.com' )->one();
+$table->where( 'user_email', 'admin@example.com' )->one();
 ```
 
 #### To retrieve a value
@@ -165,36 +164,33 @@ $table->truncate();
 
 ```php
 // select * from wp_users where id = 2
-$table->select()->where( 'id', 2 )->get();
+$table->where( 'id', 2 )->get();
 
 // select * from wp_users where id != 42
-$table->select()->where( 'id', '!=', 42 )->get();
+$table->where( 'id', '!=', 42 )->get();
 
 // select * from wp_users where id = 2 and active = 1
-$table->select()->where( 'id', 2 )->where( 'active', 1 )->get();
-$table->select()->where( 'id', 2 )->andWhere( 'active', 1 )->get();
+$table->where( 'id', 2 )->where( 'active', 1 )->get();
+$table->where( 'id', 2 )->andWhere( 'active', 1 )->get();
 
 // select * from wp_users where id = 2 or active = 1
-$table->select()->where( 'id', 2 )->orWhere( 'active', 1 )->get();
+$table->where( 'id', 2 )->orWhere( 'active', 1 )->get();
 
 // select * from wp_users where ( a = 'b' or c = 'd' )
-$table->select()
-	->orWhere( array(
-		array( 'a', 'b' ),
-		array( 'c', 'd' ),
-	) )->get();
+$table->orWhere( array(
+	array( 'a', 'b' ),
+	array( 'c', 'd' ),
+) )->get();
 
 // select * from wp_users where a = 1 or ( a > 10 and a < 20 )
-$table->select()
-	->where( 'a', 1 )
+$table->where( 'a', 1 )
 	->orWhere( array(
 		array( 'a', '>', 10 ),
 		array( 'a', '<', 20 ),
 	), 'and' )->get();
 
 // select * from wp_users where a = 1 or ( a > 10 and a < 20 ) and c = 30
-$table->select()
-	->where( 'a', 1 )
+$table->where( 'a', 1 )
 	->orWhere( array(
 		array( 'a', '>', 10 ),
 		array( 'a', '<', 20 ),
@@ -202,28 +198,44 @@ $table->select()
 	->andWhere( 'c', 30 )->get();
 
 // select * from wp_users where id in (23, 25, 30)
-$table->select()->whereIn( 'id', array( 23, 25, 30 ) );
+$table->whereIn( 'id', array( 23, 25, 30 ) );
+
+// select * from wp_users where id not in (23, 25, 30)
+$table->whereNotIn( 'id', array( 23, 25, 30 ) );
 
 // select * from wp_users where skills in ('php', 'javascript', 'ruby')
-$table->select()->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
+$table->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
 
 // select * from wp_users where id between 10 and 100
-$table->select()->whereBetween( 'id', array( 10, 100 ) );
+$table->whereBetween( 'id', array( 10, 100 ) );
 
 // select * from wp_users where id not between 10 and 100
-$table->select()->whereNotBetween( 'id', array( 10, 100 ) );
+$table->whereNotBetween( 'id', array( 10, 100 ) );
 
 // select * from wp_users where dates between '10-04-2018' and '10-09-2018'
-$table->select()->whereBetween( 'dates', array( '10-04-2018', '10-09-2018' ) );
+$table->whereBetween( 'dates', array( '10-04-2018', '10-09-2018' ) );
+
+// select * from wp_users where id is null
+$table->whereNull( 'id' )->get();
+
+// select * from wp_users where name is not null
+$table->whereNotNull( 'name' )->get();
 ```
 
 ---
 
-### Groupby statement
+### Groupby and Having statement
 
 ```php
 // select * from wp_users group by id
-$table->select()->groupBy( 'id' )->get();
+$table->groupBy( 'id' )->get();
+
+// select count(id) as total, post_id from phpunit where post_id > 10 group by post_id having count(id) > 25
+$table->selectCount( 'id', 'total' )
+	->select( 'post_id' )
+	->whereIn( 'post_id', '>', 10 )
+	->groupBy( 'post_id' )
+	->having( 'count(id)', '>', 25 );
 ```
 
 ---
@@ -232,22 +244,22 @@ $table->select()->groupBy( 'id' )->get();
 
 ```php
 // select * from wp_users order by id asc
-$table->select()->orderBy( 'id' )->get();
+$table->orderBy( 'id' )->get();
 
 // select * from wp_users order by id desc
-$table->select()->orderBy( 'id', 'desc' )->get();
+$table->orderBy( 'id', 'desc' )->get();
 
 // select * from wp_users order by firstname desc, lastname desc
-$table->select()->orderBy( 'firstname, lastname', 'desc' )->get();
+$table->orderBy( 'firstname, lastname', 'desc' )->get();
 
 // select * from wp_users order by firstname asc, lastname desc
-$table->select()->orderBy(array(
+$table->orderBy(array(
 	'firstname' => 'asc',
 	'lastname'  => 'desc',
 ) )->get();
 
 // select * from wp_users order by firstname <> nick
-$table->select()->orderBy( 'firstname <> nick', null )->get();
+$table->orderBy( 'firstname <> nick', null )->get();
 ```
 
 ---
@@ -256,11 +268,11 @@ $table->select()->orderBy( 'firstname <> nick', null )->get();
 
 ```php
 // select * from wp_users limit 0, 1
-$table->select()->limit( 1 )->get();
+$table->limit( 1 )->get();
 
 // select * from wp_users limit 20, 10
-$table->select()->limit( 10, 20 )->get();
+$table->limit( 10, 20 )->get();
 
 // select * from wp_users limit 20, 10
-$table->select()->page( 2, 10 )->get();
+$table->page( 2, 10 )->get();
 ```

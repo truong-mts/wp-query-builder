@@ -42,7 +42,7 @@ trait Escape {
 		}
 
 		if ( is_string( $value ) ) {
-			return $wpdb->prepare( '%s', $value );
+			return 'null' === $value ? $value : $wpdb->prepare( '%s', $value );
 		}
 
 		return $value;

@@ -27,7 +27,6 @@ class BuilderTest extends WP_UnitTestCase {
 	public function test_select_simple() {
 
 		$this->assertQueryTranslation( 'select * from phpunit', 'Select', function( $table ) {
-			$table->select();
 		});
 
 		$this->assertQueryTranslation( 'select distinct * from phpunit', 'Select', function( $table ) {
@@ -182,7 +181,7 @@ class BuilderTest extends WP_UnitTestCase {
 				), 'or' );
 		});
 
-		// Where In.
+		// Where in / not in.
 		$this->assertQueryTranslation( 'select * from phpunit where id in (23, 25, 30)', 'Select', function( $table ) {
 			$table->select()->whereIn( 'id', array( 23, 25, 30 ) );
 		});
@@ -191,7 +190,11 @@ class BuilderTest extends WP_UnitTestCase {
 			$table->select()->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
 		});
 
-		// Where between.
+		$this->assertQueryTranslation( 'select * from phpunit where id not in (23, 25, 30)', 'Select', function( $table ) {
+			$table->select()->whereNotIn( 'id', array( 23, 25, 30 ) );
+		});
+
+		// Where between / not between.
 		$this->assertQueryTranslation( 'select * from phpunit where id between 10 and 100', 'Select', function( $table ) {
 			$table->select()->whereBetween( 'id', array( 10, 100 ) );
 		});
@@ -200,9 +203,13 @@ class BuilderTest extends WP_UnitTestCase {
 			$table->select()->whereBetween( 'dates', array( '10-04-2018', '10-09-2018' ) );
 		});
 
-		// Where not between.
 		$this->assertQueryTranslation( 'select * from phpunit where id not between 10 and 100', 'Select', function( $table ) {
 			$table->select()->whereNotBetween( 'id', array( 10, 100 ) );
+		});
+
+		// Where is null / is not null.
+		$this->assertQueryTranslation( 'select * from phpunit where name is null', 'Select', function( $table ) {
+			$table->select()->whereNull( 'name' );
 		});
 	}
 
@@ -315,6 +322,13 @@ class BuilderTest extends WP_UnitTestCase {
 			$table->selectCount( 'id', 'incoming' )->select( 'target_post_id as post_id' )
 				->whereIn( 'target_post_id', array( 100, 120, 123 ) )
 				->groupBy( 'target_post_id' );
+		});
+
+		$this->assertQueryTranslation( 'select count(id) as incoming, target_post_id as post_id from phpunit where target_post_id in (100, 120, 123) group by target_post_id having count(id) > 25', 'Select', function( $table ) {
+			$table->selectCount( 'id', 'incoming' )->select( 'target_post_id as post_id' )
+				->whereIn( 'target_post_id', array( 100, 120, 123 ) )
+				->groupBy( 'target_post_id' )
+				->having( 'count(id)', '>', 25 );
 		});
 	}
 

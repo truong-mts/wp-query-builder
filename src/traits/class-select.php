@@ -25,15 +25,15 @@ trait Select {
 		}
 
 		if ( is_string( $fields ) ) {
-			$this->select[] = $fields;
+			$this->statements['select'][] = $fields;
 			return $this;
 		}
 
 		foreach ( $fields as $key => $field ) {
 			if ( is_string( $key ) ) {
-				$this->select[] = "$key as $field";
+				$this->statements['select'][] = "$key as $field";
 			} else {
-				$this->select[] = $field;
+				$this->statements['select'][] = $field;
 			}
 		}
 
@@ -99,7 +99,7 @@ trait Select {
 		if ( ! is_null( $alias ) ) {
 			$field .= " as {$alias}";
 		}
-		$this->select[] = $field;
+		$this->statements['select'][] = $field;
 
 		return $this;
 	}

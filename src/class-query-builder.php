@@ -48,25 +48,11 @@ class Query_Builder {
 	protected $found_rows = false;
 
 	/**
-	 * The query select statements
+	 * The query statements.
 	 *
 	 * @var array
 	 */
-	protected $select = array();
-
-	/**
-	 * The query where statements
-	 *
-	 * @var array
-	 */
-	protected $wheres = array();
-
-	/**
-	 * Order by container
-	 *
-	 * @var array
-	 */
-	protected $orders = array();
+	protected $statements = [];
 
 	/**
 	 * The query limit
@@ -76,26 +62,13 @@ class Query_Builder {
 	protected $limit = null;
 
 	/**
-	 * Values container for insert/update
-	 *
-	 * @var array
-	 */
-	protected $values = array();
-
-	/**
-	 * Group by container
-	 *
-	 * @var array
-	 */
-	protected $groups = array();
-
-	/**
 	 * Constructor
 	 *
 	 * @param string $table The table name.
 	 */
 	public function __construct( $table ) {
 		$this->table = $table;
+		$this->reset();
 	}
 
 	/**
@@ -139,7 +112,7 @@ class Query_Builder {
 	public function getVar() { // @codingStandardsIgnoreLine
 		$row = $this->one( ARRAY_A );
 
-		return current( $row );
+		return is_null( $row ) ? false : current( $row );
 	}
 
 	/**
@@ -155,7 +128,9 @@ class Query_Builder {
 	public function insert( $data, $format = null ) {
 		global $wpdb;
 
-		return $wpdb->insert( $this->table, $data, $format );
+		$wpdb->insert( $this->table, $data, $format );
+
+		return $wpdb->insert_id;
 	}
 
 	/**
@@ -266,9 +241,9 @@ class Query_Builder {
 	public function set( $name, $value = null ) {
 
 		if ( is_array( $name ) ) {
-			$this->values = $this->values + $name;
+			$this->statements['values'] = $this->statements['values'] + $name;
 		} else {
-			$this->values[ $name ] = $value;
+			$this->statements['values'][ $name ] = $value;
 		}
 
 		return $this;
@@ -282,12 +257,15 @@ class Query_Builder {
 	private function reset() {
 		$this->distinct   = false;
 		$this->found_rows = false;
-		$this->select     = array();
-		$this->wheres     = array();
-		$this->orders     = array();
-		$this->values     = array();
-		$this->groups     = array();
 		$this->limit      = null;
+		$this->statements = [
+			'select' => [],
+			'wheres' => [],
+			'orders' => [],
+			'values' => [],
+			'groups' => [],
+			'having' => '',
+		];
 
 		return $this;
 	}

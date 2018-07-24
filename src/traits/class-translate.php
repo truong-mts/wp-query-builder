@@ -28,23 +28,27 @@ trait Translate {
 		}
 
 		// Build the selected fields.
-		$build[] = ! empty( $this->select ) && is_array( $this->select ) ? join( ', ', $this->select ) : '*';
+		$build[] = ! empty( $this->statements['select'] ) && is_array( $this->statements['select'] ) ? join( ', ', $this->statements['select'] ) : '*';
 
 		// Append the table.
 		$build[] = 'from ' . $this->table;
 
 		// Build the where statements.
-		if ( ! empty( $this->wheres ) ) {
-			$build[] = $this->translateWhere( $this->wheres );
+		if ( ! empty( $this->statements['wheres'] ) ) {
+			$build[] = join( ' ', $this->statements['wheres'] );
 		}
 
 		// Build the group by statements.
-		if ( ! empty( $this->groups ) ) {
-			$build[] = 'group by ' . join( ', ', $this->groups );
+		if ( ! empty( $this->statements['groups'] ) ) {
+			$build[] = 'group by ' . join( ', ', $this->statements['groups'] );
+
+			if ( ! empty( $this->statements['having'] ) ) {
+				$build[] = $this->statements['having'];
+			}
 		}
 
 		// Build the order statement.
-		if ( ! empty( $this->orders ) ) {
+		if ( ! empty( $this->statements['orders'] ) ) {
 			$build[] = $this->translateOrderBy();
 		}
 
@@ -66,7 +70,7 @@ trait Translate {
 
 		// Add the values.
 		$values = array();
-		foreach ( $this->values as $key => $value ) {
+		foreach ( $this->statements['values'] as $key => $value ) {
 			$values[] = $key . ' = ' . $this->esc_value( $value );
 		}
 
@@ -75,8 +79,8 @@ trait Translate {
 		}
 
 		// Build the where statements.
-		if ( ! empty( $this->wheres ) ) {
-			$build[] = $this->translateWhere( $this->wheres );
+		if ( ! empty( $this->statements['wheres'] ) ) {
+			$build[] = join( ' ', $this->statements['wheres'] );
 		}
 
 		// Build offset and limit.
@@ -96,8 +100,8 @@ trait Translate {
 		$build = array( "delete from {$this->table}" );
 
 		// Build the where statements.
-		if ( ! empty( $this->wheres ) ) {
-			$build[] = $this->translateWhere( $this->wheres );
+		if ( ! empty( $this->statements['wheres'] ) ) {
+			$build[] = join( ' ', $this->statements['wheres'] );
 		}
 
 		// Build offset and limit.
@@ -109,17 +113,6 @@ trait Translate {
 	}
 
 	/**
-	 * Translate the where statements into sql
-	 *
-	 * @param array $wheres Where statements.
-	 *
-	 * @return string
-	 */
-	protected function translateWhere( $wheres ) { // @codingStandardsIgnoreLine
-		return join( ' ', $wheres );
-	}
-
-	/**
 	 * Build the order by statement
 	 *
 	 * @return string
@@ -127,7 +120,7 @@ trait Translate {
 	protected function translateOrderBy() { // @codingStandardsIgnoreLine
 		$build = array();
 
-		foreach ( $this->orders as $column => $direction ) {
+		foreach ( $this->statements['orders'] as $column => $direction ) {
 
 			// in case a raw value is given we had to
 			// put the column / raw value an direction inside another
