@@ -11,7 +11,7 @@
  * Plugin Name:       WordPress Query Builder
  * Version:           1.0.7
  * Plugin URI:        http://thewpleague.com/wp-query-builder/
- * Description:       An expressive query builder for WordPress based on Laravel's Query Builder. Build for developers by developers.
+ * Description:       An expressive query builder for WordPress. Build for developers by developers.
  * Author:            The WordPress League
  * Author URI:        http://thewpleague.com/
  * License:           GPL-2.0+

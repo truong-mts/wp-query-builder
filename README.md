@@ -2,7 +2,7 @@
 
 # WordPress Query Builder
 
-An expressive query builder for WordPress based on Laravel's Query Builder. Wraps the `$wpdb` global.
+An expressive query builder for WordPress. Build for developers by developers.
 
 ## How to use in managed environments
 
@@ -17,9 +17,8 @@ To use the Query builder
 ```php
 include('vendor/autoload.php');
 
-global $wpdb;
-
-$table = new TheLeague\Database\Database::table( $wpdb->prefix . 'users' );
+$table = new TheLeague\Database\Database::table( 'users' );
+$table = wp_query_builder( 'users' );
 
 $table->where( 'id', 2 )
   ->orderBy( 'id', 'desc' )
@@ -43,9 +42,7 @@ or generate a map of your database.
 ### Select statement
 
 ```php
-global $wpdb;
-
-$table = new TheLeague\Database\Database::table( $wpdb->prefix . 'users' )
+$table = new TheLeague\Database\Database::table( 'users' )
 
 // select * from wp_users
 $table->get();
