@@ -27,6 +27,8 @@ defined( 'ABSPATH' ) || exit;
  */
 include dirname( __FILE__ ) . '/vendor/autoload.php';
 
+use TheLeague\Database\Database;
+
 if ( ! function_exists( 'wp_query_builder' ) ) {
 	/**
 	 * Make wp query builder as global scope.
@@ -35,6 +37,6 @@ if ( ! function_exists( 'wp_query_builder' ) ) {
 	 * @return Database Database object instance.
 	 */
 	function wp_query_builder( $table_name ) {
-		return TheLeague\Database\Database::table( $table_name );
+		return Database::table( $table_name );
 	}
 }

@@ -19,9 +19,9 @@ trait Where {
 	 *     ->where('age', '>', 18)
 	 *     ->where('name', 'in', ['charles', 'john', 'jeffry'])
 	 *
-	 * @throws Exception If $type is not 'and', 'or', 'where'.
+	 * @throws \Exception If $type is not 'and', 'or', 'where'.
 	 *
-	 * @param string $column The SQL column.
+	 * @param mixed  $column The SQL column.
 	 * @param mixed  $param1 Operator or value depending if $param2 isset.
 	 * @param mixed  $param2 The value if $param1 is an operator.
 	 * @param string $type the where type ( and, or ).
@@ -32,7 +32,7 @@ trait Where {
 
 		// Check if the where type is valid.
 		if ( ! in_array( $type, array( 'and', 'or', 'where' ) ) ) {
-			throw new Exception( 'Invalid where type "' . $type . '"' );
+			throw new \Exception( 'Invalid where type "' . $type . '"' );
 		}
 
 		$sub_type = is_null( $param1 ) ? $type : $param1;
@@ -221,7 +221,7 @@ trait Where {
 	 * @param mixed  $param2 The value if $param1 is an operator.
 	 * @param string $type the where type ( and, or ).
 	 *
-	 * @return self The current query builder.
+	 * @return string
 	 */
 	protected function generateWhere( $column, $param1 = null, $param2 = null, $type = 'and' ) { // @codingStandardsIgnoreLine
 

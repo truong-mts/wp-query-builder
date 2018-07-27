@@ -78,7 +78,7 @@ class Query_Builder {
 	 *
 	 * @return mixed
 	 */
-	public function get( $output = OBJECT ) {
+	public function get( $output = \OBJECT ) {
 		global $wpdb;
 
 		$this->last_query = $this->translateSelect();
@@ -94,7 +94,7 @@ class Query_Builder {
 	 *
 	 * @return mixed
 	 */
-	public function one( $output = OBJECT ) {
+	public function one( $output = \OBJECT ) {
 		global $wpdb;
 
 		$this->limit( 1 );
@@ -110,7 +110,7 @@ class Query_Builder {
 	 * @return mixed
 	 */
 	public function getVar() { // @codingStandardsIgnoreLine
-		$row = $this->one( ARRAY_A );
+		$row = $this->one( \ARRAY_A );
 
 		return is_null( $row ) ? false : current( $row );
 	}
@@ -205,8 +205,8 @@ class Query_Builder {
 	 */
 	public function limit( $limit, $offset = 0 ) {
 		global $wpdb;
-		$limit  = absint( $limit );
-		$offset = absint( $offset );
+		$limit  = \absint( $limit );
+		$offset = \absint( $offset );
 
 		$this->limit = $wpdb->prepare( 'limit %d, %d', $offset, $limit );
 
@@ -222,8 +222,8 @@ class Query_Builder {
 	 * @return self The current query builder.
 	 */
 	public function page( $page, $size = 25 ) {
-		$size   = absint( $size );
-		$offset = $size * absint( $page );
+		$size   = \absint( $size );
+		$offset = $size * \absint( $page );
 
 		$this->limit( $size, $offset );
 
