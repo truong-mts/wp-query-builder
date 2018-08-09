@@ -30,11 +30,11 @@ class BuilderTest extends WP_UnitTestCase {
 		});
 
 		$this->assertQueryTranslation( 'select distinct * from phpunit', 'Select', function( $table ) {
-			$table->select()->distinct();
+			$table->distinct();
 		});
 
 		$this->assertQueryTranslation( 'select SQL_CALC_FOUND_ROWS * from phpunit', 'Select', function( $table ) {
-			$table->select()->found_rows();
+			$table->found_rows();
 		});
 	}
 
@@ -106,56 +106,48 @@ class BuilderTest extends WP_UnitTestCase {
 
 		// Simple.
 		$this->assertQueryTranslation( 'select * from phpunit where id = 2', 'Select', function( $table ) {
-			$table->select()
-				->where( 'id', 2 );
+			$table->where( 'id', 2 );
 		});
 
 		// Diffrent expression.
 		$this->assertQueryTranslation( 'select * from phpunit where id != 42', 'Select', function( $table ) {
-			$table->select()
-				->where( 'id', '!=', 42 );
+			$table->where( 'id', '!=', 42 );
 		});
 
 		// 2 wheres AND.
 		$this->assertQueryTranslation( 'select * from phpunit where id = 2 and active = 1', 'Select', function( $table ) {
-			$table->select()
-				->where( 'id', 2 )
+			$table->where( 'id', 2 )
 				->where( 'active', 1 );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where id = 2 and active = 1', 'Select', function( $table ) {
-			$table->select()
-				->where( 'id', 2 )
-				->andWhere( 'active', 1 );
+			$table->where( 'id', 2 )
+				->where( 'active', 1 );
 		});
 
 		// 2 wheres OR.
 		$this->assertQueryTranslation( 'select * from phpunit where id = 42 or active = 1', 'Select', function( $table ) {
-			$table->select()
-				->where( 'id', 42 )
+			$table->where( 'id', 42 )
 				->orWhere( 'active', 1 );
 		});
 
 		// Nesting.
 		$this->assertQueryTranslation( 'select * from phpunit where ( a = \'b\' or c = \'d\' )', 'Select', function( $table ) {
-			$table->select()
-				->orWhere( array(
+			$table->orWhere( array(
 					array( 'a', 'b' ),
 					array( 'c', 'd' ),
 				) );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where ( a > 10 and a < 20 )', 'Select', function( $table ) {
-			$table->select()
-				->orWhere( array(
+			$table->orWhere( array(
 					array( 'a', '>', 10 ),
 					array( 'a', '<', 20 ),
 				), 'and' );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where a = 1 or ( a > 10 and a < 20 )', 'Select', function( $table ) {
-			$table->select()
-				->where( 'a', 1 )
+			$table->where( 'a', 1 )
 				->orWhere( array(
 					array( 'a', '>', 10 ),
 					array( 'a', '<', 20 ),
@@ -163,18 +155,16 @@ class BuilderTest extends WP_UnitTestCase {
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where a = 1 or ( a > 10 and a < 20 ) and c = 30', 'Select', function( $table ) {
-			$table->select()
-				->where( 'a', 1 )
+			$table->where( 'a', 1 )
 				->orWhere( array(
 					array( 'a', '>', 10 ),
 					array( 'a', '<', 20 ),
 				), 'and' )
-				->andWhere( 'c', 30 );
+				->where( 'c', 30 );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where is_active = 1 and ( options like \'a\' or options like \'b\' )', 'Select', function( $table ) {
-			$table->select()
-				->where( 'is_active', 1 )
+			$table->where( 'is_active', 1 )
 				->where( array(
 					array( 'options', 'like', 'a' ),
 					array( 'options', 'like', 'b' ),
@@ -183,33 +173,33 @@ class BuilderTest extends WP_UnitTestCase {
 
 		// Where in / not in.
 		$this->assertQueryTranslation( 'select * from phpunit where id in (23, 25, 30)', 'Select', function( $table ) {
-			$table->select()->whereIn( 'id', array( 23, 25, 30 ) );
+			$table->whereIn( 'id', array( 23, 25, 30 ) );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where skills in (\'php\', \'javascript\', \'ruby\')', 'Select', function( $table ) {
-			$table->select()->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
+			$table->whereIn( 'skills', array( 'php', 'javascript', 'ruby' ) );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where id not in (23, 25, 30)', 'Select', function( $table ) {
-			$table->select()->whereNotIn( 'id', array( 23, 25, 30 ) );
+			$table->whereNotIn( 'id', array( 23, 25, 30 ) );
 		});
 
 		// Where between / not between.
 		$this->assertQueryTranslation( 'select * from phpunit where id between 10 and 100', 'Select', function( $table ) {
-			$table->select()->whereBetween( 'id', array( 10, 100 ) );
+			$table->whereBetween( 'id', array( 10, 100 ) );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where dates between \'10-04-2018\' and \'10-09-2018\'', 'Select', function( $table ) {
-			$table->select()->whereBetween( 'dates', array( '10-04-2018', '10-09-2018' ) );
+			$table->whereBetween( 'dates', array( '10-04-2018', '10-09-2018' ) );
 		});
 
 		$this->assertQueryTranslation( 'select * from phpunit where id not between 10 and 100', 'Select', function( $table ) {
-			$table->select()->whereNotBetween( 'id', array( 10, 100 ) );
+			$table->whereNotBetween( 'id', array( 10, 100 ) );
 		});
 
 		// Where is null / is not null.
 		$this->assertQueryTranslation( 'select * from phpunit where name is null', 'Select', function( $table ) {
-			$table->select()->whereNull( 'name' );
+			$table->whereNull( 'name' );
 		});
 	}
 
@@ -220,17 +210,17 @@ class BuilderTest extends WP_UnitTestCase {
 
 		// Simple.
 		$this->assertQueryTranslation( 'select * from phpunit limit 0, 1', 'Select', function( $table ) {
-			$table->select()->limit( 1 );
+			$table->limit( 1 );
 		});
 
 		// With offset.
 		$this->assertQueryTranslation( 'select * from phpunit limit 20, 10', 'Select', function( $table ) {
-			$table->select()->limit( 10, 20 );
+			$table->limit( 10, 20 );
 		});
 
 		// Pagination.
 		$this->assertQueryTranslation( 'select * from phpunit limit 20, 10', 'Select', function( $table ) {
-			$table->select()->page( 2, 10 );
+			$table->page( 2, 10 );
 		});
 	}
 
@@ -241,22 +231,22 @@ class BuilderTest extends WP_UnitTestCase {
 
 		// Simple.
 		$this->assertQueryTranslation( 'select * from phpunit order by id asc', 'Select', function( $table ) {
-			$table->select()->orderBy( 'id' );
+			$table->orderBy( 'id' );
 		});
 
 		// Other direction.
 		$this->assertQueryTranslation( 'select * from phpunit order by id desc', 'Select', function( $table ) {
-			$table->select()->orderBy( 'id', 'desc' );
+			$table->orderBy( 'id', 'desc' );
 		});
 
 		// More keys comma separated.
 		$this->assertQueryTranslation( 'select * from phpunit order by firstname desc, lastname desc', 'Select', function( $table ) {
-			$table->select()->orderBy( 'firstname, lastname', 'desc' );
+			$table->orderBy( 'firstname, lastname', 'desc' );
 		});
 
 		// Multipe sortings diffrent direction.
 		$this->assertQueryTranslation( 'select * from phpunit order by firstname asc, lastname desc', 'Select', function( $table ) {
-			$table->select()->orderBy( array(
+			$table->orderBy( array(
 				'firstname' => 'asc',
 				'lastname'  => 'desc',
 			) );
@@ -264,7 +254,7 @@ class BuilderTest extends WP_UnitTestCase {
 
 		// Raw sorting.
 		$this->assertQueryTranslation( 'select * from phpunit order by firstname <> nick', 'Select', function( $table ) {
-			$table->select()->orderBy( 'firstname <> nick', null );
+			$table->orderBy( 'firstname <> nick', null );
 		});
 	}
 

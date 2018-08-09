@@ -75,30 +75,16 @@ trait Where {
 	}
 
 	/**
-	 * Create an and where statement
-	 *
-	 * @param string $column The SQL column.
-	 * @param mixed  $param1 Operator or value depending if $param2 isset.
-	 * @param mixed  $param2 The value if $param1 is an operator.
-	 *
-	 * @return self The current query builder.
-	 */
-	public function andWhere( $column, $param1 = null, $param2 = null ) { // @codingStandardsIgnoreLine
-		return $this->where( $column, $param1, $param2, 'and' );
-	}
-
-	/**
 	 * Creates a where in statement
 	 *
 	 *     ->whereIn('id', [42, 38, 12])
 	 *
-	 * @param string $column The SQL column.
+	 * @param string $column  The SQL column.
 	 * @param array  $options Array of values for in statement.
 	 *
 	 * @return self The current query builder.
 	 */
 	public function whereIn( $column, $options = array() ) { // @codingStandardsIgnoreLine
-
 		if ( empty( $options ) ) {
 			return $this;
 		}
@@ -107,17 +93,34 @@ trait Where {
 	}
 
 	/**
+	 * Creates a where in statement
+	 *
+	 *     ->orWhereIn('id', [42, 38, 12])
+	 *
+	 * @param string $column  The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereIn( $column, $options = array() ) { // @codingStandardsIgnoreLine
+		if ( empty( $options ) ) {
+			return $this;
+		}
+
+		return $this->where( $column, 'in', $options, 'or' );
+	}
+
+	/**
 	 * Creates a where not in statement
 	 *
 	 *     ->whereNotIn('id', [42, 38, 12])
 	 *
-	 * @param string $column The SQL column.
+	 * @param string $column  The SQL column.
 	 * @param array  $options Array of values for in statement.
 	 *
 	 * @return self The current query builder.
 	 */
 	public function whereNotIn( $column, $options = array() ) { // @codingStandardsIgnoreLine
-
 		if ( empty( $options ) ) {
 			return $this;
 		}
@@ -126,17 +129,34 @@ trait Where {
 	}
 
 	/**
+	 * Creates a where not in statement
+	 *
+	 *     ->orWhereNotIn('id', [42, 38, 12])
+	 *
+	 * @param string $column  The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereNotIn( $column, $options = array() ) { // @codingStandardsIgnoreLine
+		if ( empty( $options ) ) {
+			return $this;
+		}
+
+		return $this->where( $column, 'not in', $options, 'or' );
+	}
+
+	/**
 	 * Creates a where between statement
 	 *
 	 *     ->whereBetween('id', [10, 100])
 	 *
-	 * @param string $column The SQL column.
+	 * @param string $column  The SQL column.
 	 * @param array  $options Array of values for in statement.
 	 *
 	 * @return self The current query builder.
 	 */
 	public function whereBetween( $column, $options = array() ) { // @codingStandardsIgnoreLine
-
 		if ( empty( $options ) ) {
 			return $this;
 		}
@@ -145,22 +165,57 @@ trait Where {
 	}
 
 	/**
+	 * Creates a where between statement
+	 *
+	 *     ->orWhereBetween('id', [10, 100])
+	 *
+	 * @param string $column  The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereBetween( $column, $options = array() ) { // @codingStandardsIgnoreLine
+		if ( empty( $options ) ) {
+			return $this;
+		}
+
+		return $this->where( $column, 'between', $options, 'or' );
+	}
+
+	/**
 	 * Creates a where not between statement
 	 *
 	 *     ->whereNotBetween('id', [10, 100])
 	 *
-	 * @param string $column The SQL column.
+	 * @param string $column  The SQL column.
 	 * @param array  $options Array of values for in statement.
 	 *
 	 * @return self The current query builder.
 	 */
 	public function whereNotBetween( $column, $options = array() ) { // @codingStandardsIgnoreLine
-
 		if ( empty( $options ) ) {
 			return $this;
 		}
 
 		return $this->where( $column, 'not between', $options );
+	}
+
+	/**
+	 * Creates a where not between statement
+	 *
+	 *     ->orWhereNotBetween('id', [10, 100])
+	 *
+	 * @param string $column  The SQL column.
+	 * @param array  $options Array of values for in statement.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereNotBetween( $column, $options = array() ) { // @codingStandardsIgnoreLine
+		if ( empty( $options ) ) {
+			return $this;
+		}
+
+		return $this->where( $column, 'not between', $options, 'or' );
 	}
 
 	/**
@@ -172,9 +227,27 @@ trait Where {
 	 * @param string $value  Value for like statement.
 	 * @param string $start  (Optional) The start of like query.
 	 * @param string $end    (Optional) The end of like query.
+	 *
+	 * @return self The current query builder.
 	 */
 	public function whereLike( $column, $value, $start = '%', $end = '%' ) { // @codingStandardsIgnoreLine
 		return $this->where( $column, 'like', $this->esc_like( $value, $start, $end ) );
+	}
+
+	/**
+	 * Creates a where like statement
+	 *
+	 *     ->orWhereLike('id', 'value')
+	 *
+	 * @param string $column The SQL column.
+	 * @param string $value  Value for like statement.
+	 * @param string $start  (Optional) The start of like query.
+	 * @param string $end    (Optional) The end of like query.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereLike( $column, $value, $start = '%', $end = '%' ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'like', $this->esc_like( $value, $start, $end ), 'or' );
 	}
 
 	/**
@@ -186,9 +259,27 @@ trait Where {
 	 * @param mixed  $value  Value for like statement.
 	 * @param string $start  (Optional) The start of like query.
 	 * @param string $end    (Optional) The end of like query.
+	 *
+	 * @return self The current query builder.
 	 */
 	public function whereNotLike( $column, $value, $start = '%', $end = '%' ) { // @codingStandardsIgnoreLine
 		return $this->where( $column, 'not like', $this->esc_like( $value, $start, $end ) );
+	}
+
+	/**
+	 * Creates a where not like statement
+	 *
+	 *     ->orWhereNotLike('id', 'value' )
+	 *
+	 * @param string $column The SQL column.
+	 * @param mixed  $value  Value for like statement.
+	 * @param string $start  (Optional) The start of like query.
+	 * @param string $end    (Optional) The end of like query.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereNotLike( $column, $value, $start = '%', $end = '%' ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'not like', $this->esc_like( $value, $start, $end ), 'or' );
 	}
 
 	/**
@@ -197,9 +288,24 @@ trait Where {
 	 *     ->whereNull( 'name' )
 	 *
 	 * @param string $column The SQL column.
+	 *
+	 * @return self The current query builder.
 	 */
 	public function whereNull( $column ) { // @codingStandardsIgnoreLine
 		return $this->where( $column, 'is', 'null' );
+	}
+
+	/**
+	 * Creates a where is null statement
+	 *
+	 *     ->orWhereNull( 'name' )
+	 *
+	 * @param string $column The SQL column.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereNull( $column ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'is', 'null', 'or' );
 	}
 
 	/**
@@ -208,9 +314,24 @@ trait Where {
 	 *     ->whereNotNull( 'name' )
 	 *
 	 * @param string $column The SQL column.
+	 *
+	 * @return self The current query builder.
 	 */
 	public function whereNotNull( $column ) { // @codingStandardsIgnoreLine
 		return $this->where( $column, 'is not', 'null' );
+	}
+
+	/**
+	 * Creates a where is not null statement
+	 *
+	 *     ->orWhereNotNull( 'name' )
+	 *
+	 * @param string $column The SQL column.
+	 *
+	 * @return self The current query builder.
+	 */
+	public function orWhereNotNull( $column ) { // @codingStandardsIgnoreLine
+		return $this->where( $column, 'is not', 'null', 'or' );
 	}
 
 	/**
