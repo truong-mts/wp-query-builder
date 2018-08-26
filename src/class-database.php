@@ -24,7 +24,7 @@ class Database {
 	 *
 	 * @param string $table_name A Database instance id.
 	 *
-	 * @return Database Database object instance.
+	 * @return Query_Builder Query_Builder object instance.
 	 */
 	public static function table( $table_name ) {
 		global $wpdb;
